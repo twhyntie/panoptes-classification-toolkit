@@ -1,0 +1,5 @@
+# Logging
+log_*.log
+
+# Old stuff
+old/
