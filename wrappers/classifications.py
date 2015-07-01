@@ -14,7 +14,7 @@ import os
 import logging as lg
 
 #...for the subject wrapper class.
-from subjects import Subject
+#from subjects import Subject
 
 #...for the JSON stuff.
 import json
@@ -161,7 +161,7 @@ class ClassificationSet:
         ## A list of the classifications.
         self.__cs = []
 
-        # Loop over the records.
+        # Loop over the records and populate the classification set.
         for i, c in enumerate(cd):
 
             ## The classification.
@@ -170,6 +170,14 @@ class ClassificationSet:
             # Skip classifications that aren't from the required workflow.
             if classification.getWorkflowSpec() != workflow_spec:
                 continue
+
+            # Get the classification's subject ID.
+            subject_id = classification.getSubjectId()
+
+            if subject_id in self.__subject_classification_count.keys():
+                self.__subject_classification_count[subject_id] += 1
+            else:
+                self.__subject_classification_count[subject_id] = 1
 
             # Add the classification to the classification set.
             self.__cs.append(classification)
@@ -180,3 +188,12 @@ class ClassificationSet:
 
     def getSubjectClassificationCount(self):
         return self.__subject_classification_count
+
+    def getNumberOfUniqueSubjectsClassified(self):
+
+        lg.info(" * Subject classification counts:")
+        for subject_id, count in self.__subject_classification_count.iteritems():
+            lg.info(" * Subject ID %s: % 5d" % (subject_id, count))
+        lg.info(" *")
+
+        return len(self.__subject_classification_count)

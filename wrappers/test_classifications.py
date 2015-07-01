@@ -28,7 +28,10 @@ class ClassificationsTest(unittest.TestCase):
         cs = ClassificationSet("testdata/results.csv", (27, 9, 14))
 
         # Test the number of classifications in the test dataset.
-        self.assertEqual(cs.getNumberOfClassifications(), 20)
+        self.assertEqual(cs.getNumberOfClassifications(), 22)
+
+        # Test the number of unique subjects that have classifications.
+        self.assertEqual(cs.getNumberOfUniqueSubjectsClassified(), 2)
 
 
 if __name__ == "__main__":

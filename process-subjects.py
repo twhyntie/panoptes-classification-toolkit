@@ -3,7 +3,7 @@
 
 """
 
- MoEDAL and CERN@school - Processing Panoptes classifications.
+ MoEDAL and CERN@school - Processing Panoptes subjects.
 
  See the README.md file and the GitHub wiki for more information.
 
@@ -20,15 +20,15 @@ import argparse
 #...for the logging.
 import logging as lg
 
-# Wrapper class the classification set.
-from wrappers.classifications import ClassificationSet
+# Wrapper class for the subject set.
+from wrappers.subjects import SubjectSet
 
 
 if __name__ == "__main__":
 
     print("*")
     print("*==================================================*")
-    print("* CERN@school - Panoptes classification processing *")
+    print("* CERN@school - Panoptes subject processing *")
     print("*==================================================*")
 
     # Get the datafile path from the command line.
@@ -40,10 +40,6 @@ if __name__ == "__main__":
 
     ## The path to the data file.
     datapath = args.inputPath
-
-    # Check if the input directory exists. If it doesn't, quit.
-    if not os.path.isdir(datapath):
-        raise IOError("* ERROR: '%s' input directory does not exist!" % (datapath))
 
     ## The output path.
     outputpath = args.outputPath
@@ -65,6 +61,17 @@ if __name__ == "__main__":
     print("* Input path          : '%s'" % (datapath))
     print("* Output path         : '%s'" % (outputpath))
     print("*")
+    lg.info(" *---------------------")
+    lg.info(" * process-subjects.py ")
+    lg.info(" *---------------------")
+    lg.info(" * Input path          : '%s'" % (datapath))
+    lg.info(" * Output path         : '%s'" % (outputpath))
+    lg.info(" *")
 
-    ## The classification set.
-    cs = ClassificationSet(datapath, (27, 9, 14))
+
+    ## The subject set.
+    sset = SubjectSet(datapath)
+
+    # Create the subject page (initial).
+    for fn, subject in sset.getSubjects().iteritems():
+        subject.makePage(datapath, outputpath)
